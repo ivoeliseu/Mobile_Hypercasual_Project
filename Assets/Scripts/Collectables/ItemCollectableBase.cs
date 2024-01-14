@@ -7,14 +7,13 @@ public class ItemCollectableBase : MonoBehaviour
     public string compareTag = "Player";
     public float timeToHide = 3f;
 
-    public ParticleSystem particleSystem;
     public GameObject graphicItem;
 
     [Header("Sounds")]
     public AudioSource audioSource;
 
 
-    //CASO DETECTAR TRIGGER, SE O OBJETO QUE COLIDIU TIVER A compareTag, usa a função COLLECT
+    //CASO DETECTAR TRIGGER, SE O OBJETO QUE COLIDIU TIVER A compareTag, usa a funï¿½ï¿½o COLLECT
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.transform.CompareTag(compareTag))
@@ -23,15 +22,15 @@ public class ItemCollectableBase : MonoBehaviour
         }
     }
 
-    //FUNÇÃO COLLECT, QUE PODE SER CHAMADA EM OUTRAS CONDIÇÕES
+    //FUNï¿½ï¿½O COLLECT, QUE PODE SER CHAMADA EM OUTRAS CONDIï¿½ï¿½ES
     protected virtual void Collect()
     {
         if(graphicItem != null) graphicItem.SetActive(false); //SE EXISTIR UM GRAPHIC ITEM, O DESABILITA.
-        Invoke("HideObject", timeToHide); //INVOCA A FUNÇÃO HIDE OBJECT APÓS O TEMPO DE timeToHide
-        OnCollect(); //ATIVA A FUNÇÃO OnCollect()
+        Invoke("HideObject", timeToHide); //INVOCA A FUNï¿½ï¿½O HIDE OBJECT APï¿½S O TEMPO DE timeToHide
+        OnCollect(); //ATIVA A FUNï¿½ï¿½O OnCollect()
     }
 
-    //FUNÇÃO HideObject DESATIVA O OBJETO.
+    //FUNï¿½ï¿½O HideObject DESATIVA O OBJETO.
     private void HideObject()
     {
         gameObject.SetActive(false); //Desativa o GameObject
@@ -40,7 +39,7 @@ public class ItemCollectableBase : MonoBehaviour
     //OnCollect REPRODUZ AS PARTICULAS E AUDIOS VINCULADOS AO OBJETO.
     protected virtual void OnCollect()
     {
-        if (particleSystem != null) particleSystem.Play();
+        if (GetComponent<ParticleSystem>() != null) GetComponent<ParticleSystem>().Play();
         if (audioSource != null) audioSource.Play();
     }
 }

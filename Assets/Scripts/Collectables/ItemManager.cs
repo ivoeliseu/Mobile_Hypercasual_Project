@@ -7,7 +7,6 @@ using UnityEngine;
 public class ItemManager : Singleton<ItemManager>
 {
     public SOInt coins;
-    public string compareTag = "Coins";
 
     private void Start()
     {
