@@ -26,12 +26,12 @@ public class ItemCollectableBase : MonoBehaviour
     protected virtual void Collect()
     {
         if(graphicItem != null) graphicItem.SetActive(false); //SE EXISTIR UM GRAPHIC ITEM, O DESABILITA.
-        Invoke("HideObject", timeToHide); //INVOCA A FUN��O HIDE OBJECT AP�S O TEMPO DE timeToHide
-        OnCollect(); //ATIVA A FUN��O OnCollect()
+        Invoke("HideObject", timeToHide); //INVOCA A FUNÇÃO HIDE OBJECT AP�S O TEMPO DE timeToHide
+        OnCollect(); //ATIVA A FUNÇÃO OnCollect()
     }
 
     //FUN��O HideObject DESATIVA O OBJETO.
-    private void HideObject()
+    public void HideObject()
     {
         gameObject.SetActive(false); //Desativa o GameObject
     }

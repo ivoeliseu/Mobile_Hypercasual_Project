@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -26,16 +27,19 @@ public class PlayerController : Singleton<PlayerController>
     private bool _fail;
 
     [Header("Power Ups")]
-    public TextMeshProUGUI uiTextPowerUp;
+    public TextMeshPro TextPowerUp;
+    public bool invencible = false; //Variável utilizada para o PowerUp de Invencibilidade
+    private Vector3 _startPosition;
 
-    
+
 
     private void Start()
     {
+        //Usado para capturar a posição inicial do objeto.
+        _startPosition = transform.position; 
+        ResetSpeed();
         //No Start, cena iniciará pausada aguardando o click no start.
         pauseController.Pause();
-        //Coloca a váriavel de _currentSpeed igual a variável de startSpeed
-        _currentSpeed = startSpeed;
         _canRun = true;
         _fail = false;
     }
@@ -60,10 +64,11 @@ public class PlayerController : Singleton<PlayerController>
    
     private void OnCollisionEnter(Collision collision)
     {
+        if (invencible) return; //Se invencible for TRUE, não executa o código abaixo.
         //Se colidir com inimigo, _fail será true
         if (collision.transform.tag == enemyTag)
         {
-            _fail = true;
+            _fail = true; //Se invencible for false, _fail será true
         }
         //Checagem de colissão com inimigos OU o fim de jogo; Se colidir, jogo encerra com a tela de falha.
         if (collision.transform.tag == enemyTag || collision.transform.tag == endGameTag)
@@ -88,17 +93,30 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
     #region POWERUPS
-    public void SetPowerUpText(string s) 
+    public void SetPowerUpText(string s) //Váriavel recebendo o texto de descrição dos Power Ups
     { 
-        uiTextPowerUp.text = s; 
+        TextPowerUp.text = s; 
     }
-    public void PowerUpSpeedUp(float f) 
+    public void PowerUpSpeedUp(float f) //Variável boleana recebendo valor true ou false do script PowerUpSpeedUp
     { 
         _currentSpeed = f; 
     }
-    public void ResetSpeed() 
+    public void ResetSpeed() //Retorna o speed a velocidade original.
     { 
         _currentSpeed = startSpeed; 
+    }
+
+    public void SetPowerUpInvencible(bool b) //Variável boleana recebendo valor true ou false do script PowerUpInvencible
+    {
+        invencible = b;
+    }
+    public void PowerUpChangeHeight(float amount, float duration, float animationDuration, Ease ease) 
+    {
+        transform.DOMoveY(_startPosition.y + amount, animationDuration).SetEase(ease);
+    }
+    public void ResetHeight(float animationDuration) //Encerra o POWERUP ChangeHeight
+    {
+        transform.DOMoveY(_startPosition.y, animationDuration);
     }
     #endregion
 }
