@@ -9,7 +9,7 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Player Controller")]
     public float startSpeed = 1f;
     public float _currentSpeed;
-
+    
     private Vector3 _pos;
 
     [Header("Learp")]
@@ -29,7 +29,11 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Power Ups")]
     public TextMeshPro TextPowerUp;
     public bool invencible = false; //Variável utilizada para o PowerUp de Invencibilidade
+    
     private Vector3 _startPosition;
+
+    [Header("Animation")]
+    public AnimatorManager animatorManager;
 
 
 
@@ -39,13 +43,20 @@ public class PlayerController : Singleton<PlayerController>
         _startPosition = transform.position; 
         ResetSpeed();
         //No Start, cena iniciará pausada aguardando o click no start.
-        pauseController.Pause();
-        _canRun = true;
+        //pauseController.Pause();
+        _canRun = false;
         _fail = false;
     }
     void Update()
     {
         PlayerMovement();
+    }
+
+    public void StartGameplay() //Quando clicar no botão de iniciar, _canRun será true para permitir o movimento e irá iniciar a animação de RUN
+    {
+        _canRun = true;
+        //Ativa o trigger da animação RUN, passando o valor igual a velocidade atual do player dividido pelo start speed para acelerar a animação
+        animatorManager.Play(AnimatorManager.AnimationType.RUN);
     }
     private void PlayerMovement()
     {
@@ -69,13 +80,15 @@ public class PlayerController : Singleton<PlayerController>
         if (collision.transform.tag == enemyTag)
         {
             _fail = true; //Se invencible for false, _fail será true
+            animatorManager.Play(AnimatorManager.AnimationType.DEATH); //Irá tocar a animação de morte
         }
         //Checagem de colissão com inimigos OU o fim de jogo; Se colidir, jogo encerra com a tela de falha.
         if (collision.transform.tag == enemyTag || collision.transform.tag == endGameTag)
         {
             _canRun = false;
-            pauseController.Pause();
+            //pauseController.Pause();
             EndGame();
+            if (_fail == false) animatorManager.Play(AnimatorManager.AnimationType.IDLE);
         }
     }
 
