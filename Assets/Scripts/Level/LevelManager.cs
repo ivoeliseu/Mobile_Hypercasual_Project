@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
-{
+{   
     public Transform container; //Objeto PAI onde esse script irá spawnar os pedaços do level DENTRO
 
     [Header("Gerador de Levels Prontos")]

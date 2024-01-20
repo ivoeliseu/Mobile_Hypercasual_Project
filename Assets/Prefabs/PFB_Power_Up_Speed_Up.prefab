@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092136927533789851}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.74, y: 1.09, z: 11.35}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -68,11 +68,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compareTag: Player
-  timeToHide: 3
-  graphicItem: {fileID: 0}
+  timeToHide: 0
+  graphicItem: {fileID: 7417316528503145040}
   audioSource: {fileID: 0}
   duration: 3
-  amountToSpeed: 0
+  amountToSpeed: 15
 --- !u!1 &7417316528503145040
 GameObject:
   m_ObjectHideFlags: 0
