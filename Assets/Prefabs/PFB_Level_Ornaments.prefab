@@ -219,6 +219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1309287350114564749}
+  - component: {fileID: 9126906340629767152}
   m_Layer: 0
   m_Name: PFB_Level_Ornaments
   m_TagString: Untagged
@@ -251,6 +252,29 @@ Transform:
   - {fileID: 3568503253540562857}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9126906340629767152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722108467544993920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6b0120e19492a74bbd576af44649dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualElement:
+  - {fileID: 6246241180456358623}
+  - {fileID: 31687397917115351}
+  - {fileID: 6190797326530596563}
+  - {fileID: 1800248807543810469}
+  - {fileID: 5876780551645870825}
+  - {fileID: 1211255688656668640}
+  - {fileID: 3828654639557805490}
+  - {fileID: 4541899833097787796}
+  - {fileID: 3666516509125331286}
+  - {fileID: 401413377376500831}
 --- !u!1 &1211255688656668640
 GameObject:
   m_ObjectHideFlags: 0

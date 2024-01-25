@@ -7,6 +7,11 @@ public class ItemCollectableCoin : ItemCollectableBase
     public int coinValue = 1;
     public Collider coinCollider;
 
+    private void Start()
+    {
+        CoinsAnimations.Instance.RegisterCoin(this); //Ao iniciar, regista o objeto com esse script na lista do singleton de CoinsAnimations.
+    }
+
     //Executa OnCollect do Script ItemCollectableBase com algumas linhas adicionais
     protected override void OnCollect()
     {

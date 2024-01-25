@@ -1,6 +1,10 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour
 {   
@@ -11,45 +15,46 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private int _levelIndex; //Index para acessar as peças dos levels na lista 1 (inicia em 0)
     
     private GameObject _currentLevel; //Qual level foi spawnado
-
-    //AS LISTAS GERADAS levelPieces e _spawnedPieces derivão do Script LevelPieceBase para que poça ter acesso ao endPiece, que fará com que que spawne as peças subsequentes uma atrás da outra no fim de cada uma delas.
-    [Header("Gerador de Levels Randons")]
+        
+    [Header("Gerador de Levels Randons")] //AS LISTAS GERADAS levelPieces e _spawnedPieces derivão do Script LevelPieceBase para que possa ter acesso ao endPiece, que fará com que que spawne as peças subsequentes uma atrás da outra no fim de cada uma delas.
     public List<LevelPieceBase> levelPieces; //Irá listar PEDAÇOS de levels - PARA FACILITAR, CHAMO DE LISTA 2. 
     public int numberOfPiecesToSpawn = 5; //Número máximo de pedaços
 
     [SerializeField] private List<LevelPieceBase> _spawnedPieces; //Lista com os pedaços JÁ SPAWNADOS - PARA FACILITAR, CHAMO DE LISTA 3
 
-    //No Awake já iniciará com o Spawn de um level.
-    private void Awake()
+    [Header("Animation")]
+    public float scaleDuration = .2f; //Tempo que Irá durar pro objeto sair de escala 0 para 1
+    public float scaleTimeBetweenPieces = 1f; //Tempo entre as peças surgirem
+    public Ease ease; //Estilo da animação
+
+    [Header("Setup")]
+    public ColorManager.Setups setup;
+
+    private void Awake() //No Awake já iniciará com o Spawn de um level.
     {
-        // SpawnNextLevel(); -> Código comentando pois será utilizado o método de randomização.
-        CreateLevelPiecesBase();
+        CreateLevelPiecesBase(); // SpawnNextLevel(); -> Código comentando pois será utilizado o método de randomização.
     }
     #region SPAWNA LEVELS PRONTOS
-    //Função que spawna os pedaços dos levels
-    private void SpawnNextLevel()
+    private void SpawnNextLevel() //Função que spawna os pedaços dos levels
     {
-        //Se JÁ TIVER SPAWNADO um level, destrói o atual e spawna o próximo.
-        if(_currentLevel != null)
+        if(_currentLevel != null) 
         {
-            Destroy(_currentLevel);
+            Destroy(_currentLevel); //Se JÁ TIVER SPAWNADO um level, destrói o atual e spawna o próximo.
             _levelIndex++;
 
-            //SE o INDEX for igual ou mais que a contagem total de levels, chama a função ResetLevelIndex - LISTA 1
-            if(_levelIndex >= levels.Count)
+            
+            if(_levelIndex >= levels.Count) //SE o INDEX for igual ou mais que a contagem total de levels, chama a função ResetLevelIndex - LISTA 1
             {
                 ResetLevelIndex();
             }
         }
-
-        //_currentLevel será igual a uma instancia gerada. O objeto spawnado será referente ao  "index _level" da lista "Level" e irá spawnar dentro do objeto "container" - LISTA 1
-        _currentLevel = Instantiate(levels[_levelIndex], container);
-        //Sempre irá spawnar o level na posição 0,0,0.
-        _currentLevel.transform.localPosition = Vector3.zero;
+        
+        _currentLevel = Instantiate(levels[_levelIndex], container); //_currentLevel será igual a uma instancia gerada. O objeto spawnado será referente ao  "index _level" da lista "Level" e irá spawnar dentro do objeto "container" - LISTA 1
+        
+        _currentLevel.transform.localPosition = Vector3.zero; //Sempre irá spawnar o level na posição 0,0,0.
     }
 
-    //Função irá zerar a váriavel
-    public void ResetLevelIndex()
+    public void ResetLevelIndex() //Função irá zerar a váriavel
     {
         _levelIndex = 0;
     }
@@ -64,14 +69,24 @@ public class LevelManager : MonoBehaviour
 
         _spawnedPieces = new List<LevelPieceBase>();
 
+        CatchColorSetup();
+
         for(int i = 0; i < numberOfPiecesToSpawn; i++) 
         {
-            SpawnLevelPieceBase();
+            SpawnLevelPieceBase(setup);
         }
-
+        
+        StartCoroutine(ScalePiecesByTime());
     }
 
-    private void SpawnLevelPieceBase()
+    private void CatchColorSetup()
+    {
+        var values = Enum.GetValues(typeof(ColorManager.Setups));
+        var randomValue = (ColorManager.Setups)values.GetValue(Random.Range(0, values.Length));
+        setup = randomValue;
+    }
+
+    private void SpawnLevelPieceBase(ColorManager.Setups setup)
     {
         //Variável piece é igual a um dos index entre 0 e número máximo da lista com os pedaços (LISTA 2).
         //Gera o objeto igual ao index atual da lista na localização de container.
@@ -88,8 +103,34 @@ public class LevelManager : MonoBehaviour
             spawnedPiece.transform.position = lastPiece.endPiece.position;
         }
 
-        //Adiciona o objeto instanciado acima na lista _spawnedPieces (LISTA 3)
-        _spawnedPieces.Add(spawnedPiece);
+        //Irá aplicar as cores do Color manager no 
+        var levelPieceBase = spawnedPiece.GetComponent<LevelPieceBase>(); //Vai ter o acesso ao visualElements
+        ColorManager.Instance.ApplyColor(setup, levelPieceBase.visualElements); //Irá encaminhar o setup para aplicar a configuração da cor no ColorManager
+
+        _spawnedPieces.Add(spawnedPiece); //Adiciona o objeto instanciado acima na lista _spawnedPieces (LISTA 3)
+
+
+    }
+
+    IEnumerator ScalePiecesByTime() //Corrotina que irá escalar o tamanho das peças de 0 para 1
+    {
+        foreach(var piece in _spawnedPieces) //Para cada variável na lista "_spawnedPieces" (lista 3), o transform fica com tamanho zero.
+        {
+            piece.transform.localScale = Vector3.zero;
+        }
+
+        yield return null; //Retorna o valor nulo para a corrotina
+
+        for (int index = 0;index < _spawnedPieces.Count; index++) //váriavel index 0, enquanto for menor que a contagem de itens da lista "_spawnedPieces", faz o processo, index +1(lista 3)
+        {
+            //Ferramenta DOTWEEN, pegará o transform do item da lista _spawnedPieces no index "index" e escalará o transform dele para o tamanho 1, em "scaleDuration" segundos
+            //O tipo de animação é definido pela variável SetEase
+            _spawnedPieces[index].transform.DOScale(1, scaleDuration).SetEase(ease);
+
+            yield return new WaitForSeconds(scaleTimeBetweenPieces); //Retorna para a corrotina esperar por "scaleTimeBetweenPieces" segundo
+        }
+
+        CoinsAnimations.Instance.StartAnimations();
     }
 
     //Serve para debug.

@@ -989,6 +989,54 @@ MonoBehaviour:
   TextPowerUp: {fileID: 1434578964}
   invencible: 0
   animatorManager: {fileID: 245557399}
+--- !u!1 &693076110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 693076111}
+  - component: {fileID: 693076112}
+  m_Layer: 0
+  m_Name: Coin_Animation_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &693076111
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693076110}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1021097843}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &693076112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693076110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d3e38386e81f4499952f28bf7b2552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itens: []
+  scaleDuration: 0.2
+  scaleTimeBetweenCoins: 0.05
+  ease: 27
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,6 +1593,7 @@ Transform:
   - {fileID: 245557398}
   - {fileID: 1147022875}
   - {fileID: 1032241214}
+  - {fileID: 693076111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1032241213
@@ -1594,12 +1643,12 @@ MonoBehaviour:
   colorSetup:
   - setups: 0
     colors:
-    - {r: 0.4464667, g: 0.745283, b: 0.454381, a: 0}
-    - {r: 0.6698113, g: 0.18640976, b: 0.18640976, a: 0}
+    - {r: 0.754717, g: 0, b: 0.06810926, a: 0}
+    - {r: 0.7169812, g: 0.2759565, b: 0, a: 0}
   - setups: 1
     colors:
-    - {r: 0.8867924, g: 0.65064484, b: 0, a: 0}
-    - {r: 0.13318796, g: 0.29191154, b: 0.38679248, a: 0}
+    - {r: 0.29547882, g: 0.754717, b: 0.30738342, a: 0}
+    - {r: 0.0016464973, g: 0.3490566, b: 0.07126752, a: 0}
 --- !u!1 &1042219906
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2051,10 @@ MonoBehaviour:
   - {fileID: 6420197186074477001, guid: ad01edc74c43d624a98ade2cc8133867, type: 3}
   numberOfPiecesToSpawn: 5
   _spawnedPieces: []
+  scaleDuration: 0.3
+  scaleTimeBetweenPieces: 0.1
+  ease: 27
+  setup: 0
 --- !u!1 &1234076149
 GameObject:
   m_ObjectHideFlags: 0
