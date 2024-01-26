@@ -17,6 +17,7 @@ public class PowerUpBase : ItemCollectableBase
     //Inicia o power UP e aguardar o tempo determinado em duration para encerra-lo
     protected virtual void StartPowerUp()
     {
+        PlayerController.Instance.Bounce();
         Debug.Log("Start Power Up");
         Invoke(nameof(EndPowerUp), duration);
     }

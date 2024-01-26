@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -22,6 +23,8 @@ public class PlayerController : Singleton<PlayerController>
     public PauseController pauseController;
     public GameObject failScreen;
     public GameObject endGameScreen;
+    public LevelManager levelManager;
+    public string levelSpawnerTag;
 
     private bool _canRun;
     private bool _fail;
@@ -34,11 +37,14 @@ public class PlayerController : Singleton<PlayerController>
 
     [Header("Animation")]
     public AnimatorManager animatorManager;
+    [SerializeField] private BounceHelper _bounceHelper;
+    [SerializeField] private GameObject _startAnimationGrowUp;
 
 
 
     private void Start()
     {
+        StartAnimationGrowUp();
         //Usado para capturar a posição inicial do objeto.
         _startPosition = transform.position; 
         ResetSpeed();
@@ -50,6 +56,20 @@ public class PlayerController : Singleton<PlayerController>
     void Update()
     {
         PlayerMovement();
+    }
+
+    public void Bounce()
+    {
+        if (_bounceHelper != null)
+        {
+            _bounceHelper.Bounce();
+        }
+    }
+
+    public void StartAnimationGrowUp()
+    {
+        _startAnimationGrowUp.transform.localScale = Vector3.zero;
+        _startAnimationGrowUp.transform.DOScale(1f, 1f);
     }
 
     public void StartGameplay() //Quando clicar no botão de iniciar, _canRun será true para permitir o movimento e irá iniciar a animação de RUN
@@ -89,6 +109,14 @@ public class PlayerController : Singleton<PlayerController>
             //pauseController.Pause();
             EndGame();
             if (_fail == false) animatorManager.Play(AnimatorManager.AnimationType.IDLE);
+        }
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.transform.tag == levelSpawnerTag)
+        {
+            levelManager.CreateLevelPiecesBase();
         }
     }
 

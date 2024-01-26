@@ -30,10 +30,14 @@ public class LevelManager : MonoBehaviour
     [Header("Setup")]
     public ColorManager.Setups setup;
 
+    /*
     private void Awake() //No Awake já iniciará com o Spawn de um level.
     {
-        CreateLevelPiecesBase(); // SpawnNextLevel(); -> Código comentando pois será utilizado o método de randomização.
+        // CreateLevelPiecesBase(); -> Será chamado agora pela colisão com o trigger no script PlayerController.
+        // SpawnNextLevel(); -> Código comentando pois será utilizado o método de randomização.
     }
+    */
+
     #region SPAWNA LEVELS PRONTOS
     private void SpawnNextLevel() //Função que spawna os pedaços dos levels
     {
@@ -61,7 +65,7 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     #region SPAWNA LEVELS RANDOMIZADOS
-    private void CreateLevelPiecesBase()
+    public void CreateLevelPiecesBase()
     {
         //Lista _spawnedPieces (LISTA 3) será igual a uma lista gerada a partir do laço de repetição:
         //O laço se encerra no máximo de piecesNumber decidido.

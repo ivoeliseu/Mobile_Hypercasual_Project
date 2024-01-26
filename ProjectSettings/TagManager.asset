@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Enemy
   - EndGame
-  - Coin_Collector_Trigger
+  - LevelSpawnerTrigger
   layers:
   - Default
   - TransparentFX
