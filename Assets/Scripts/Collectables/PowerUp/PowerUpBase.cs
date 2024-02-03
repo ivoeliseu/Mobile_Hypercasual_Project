@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PowerUpBase : ItemCollectableBase
 {
-    [Header("Power Up")] 
-    public float duration; 
+    [Header("Power Up")]
+    public float duration;
 
     //Chama a base de OnCollect com o adicional de chamar a função StartPowerUp
     protected override void OnCollect() 

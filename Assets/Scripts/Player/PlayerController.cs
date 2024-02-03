@@ -10,6 +10,7 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Player Controller")]
     public float startSpeed = 1f;
     public float _currentSpeed;
+    public float limit = 4f;
     
     private Vector3 _pos;
 
@@ -21,10 +22,13 @@ public class PlayerController : Singleton<PlayerController>
     public string enemyTag = "Enemy";
     public string endGameTag = "EndGame";
     public PauseController pauseController;
-    public GameObject failScreen;
-    public GameObject endGameScreen;
     public LevelManager levelManager;
     public string levelSpawnerTag;
+
+    [Header("HUD Configuration")]
+    public GameObject failScreen;
+    public GameObject endGameScreen;
+    public GameObject inGameHud;
 
     private bool _canRun;
     private bool _fail;
@@ -39,6 +43,9 @@ public class PlayerController : Singleton<PlayerController>
     public AnimatorManager animatorManager;
     [SerializeField] private BounceHelper _bounceHelper;
     [SerializeField] private GameObject _startAnimationGrowUp;
+
+    [Header("VFX")]
+    public ParticleSystem endGameParticles;
 
 
 
@@ -86,6 +93,11 @@ public class PlayerController : Singleton<PlayerController>
         _pos.y = transform.position.y;
         _pos.z = transform.position.z;
 
+        //Define os limites que o player pode andar no level para os lados.
+        if (_pos.x < -limit) _pos.x = -limit;
+        else if (_pos.x > limit) _pos.x = limit;
+        
+
         //Pega a posição do objeto controlável e após o atraso do lerpSpeed, move o gráfico do player para a direção do objeto.
         transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
         //Move o personagem para frente no cenário baseado na velocidade em _currentSpeed
@@ -122,6 +134,9 @@ public class PlayerController : Singleton<PlayerController>
 
     private void EndGame()
     {
+        //Desativa o hud ingame para ativar o de fim de jogo ou de falha.
+        inGameHud.SetActive(false);
+
         //Se _fail for true, irá ativar a tela de falha
         if (_fail == true)
         {
@@ -131,6 +146,7 @@ public class PlayerController : Singleton<PlayerController>
         else
         {
             endGameScreen.SetActive(true);
+            if (endGameParticles != null) endGameParticles.Play();
         }
     }
     #region POWERUPS
