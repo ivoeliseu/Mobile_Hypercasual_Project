@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
-using static UnityEditor.PlayerSettings;
 
 public class TouchController : MonoBehaviour
 {
     public Vector2 pastPosition; //Salva a última posição do mouse.
     public float velocity = 1;  //Determina a velocidade que o objeto se move.
-
-    private Vector3 _pos;
     public float limit = 4f;
 
     private void Update()
